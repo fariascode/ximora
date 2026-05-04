@@ -41,6 +41,14 @@ supabase/register_sale.sql
 supabase/delete_sale.sql
 ```
 
+Para limitar el acceso solo a correos autorizados, ejecuta:
+
+```txt
+supabase/authorized_users.sql
+```
+
+Antes de ejecutarlo, cambia `TU_CORREO@EJEMPLO.COM` por el correo real que usas para entrar.
+
 Bucket sugerido para imágenes:
 
 - Nombre: `product-images`

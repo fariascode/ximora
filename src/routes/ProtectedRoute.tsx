@@ -1,8 +1,9 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { UnauthorizedScreen } from '../components/UnauthorizedScreen';
 
 export function ProtectedRoute() {
-  const { user, loading } = useAuth();
+  const { user, loading, authorized } = useAuth();
 
   if (loading) {
     return (
@@ -17,6 +18,10 @@ export function ProtectedRoute() {
 
   if (!user) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (!authorized) {
+    return <UnauthorizedScreen />;
   }
 
   return <Outlet />;
