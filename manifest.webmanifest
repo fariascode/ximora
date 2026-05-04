@@ -1,0 +1,10 @@
+{
+  "name": "XIMORA Admin",
+  "short_name": "XIMORA",
+  "description": "Administración privada de productos, inventario y ventas.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fffaf6",
+  "theme_color": "#f5e8da",
+  "icons": []
+}

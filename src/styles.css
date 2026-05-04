@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #27211d;
+  background: #fffaf6;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+@layer components {
+  .app-shell {
+    @apply min-h-screen bg-ivory text-ink;
+  }
+
+  .panel {
+    @apply rounded-2xl border border-espresso/10 bg-white/80 shadow-soft backdrop-blur;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-espresso/15 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-champagne focus:ring-4 focus:ring-champagne/15;
+  }
+
+  .label {
+    @apply text-xs font-semibold uppercase tracking-wide text-espresso/60;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-espresso px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-ink disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-espresso/15 bg-white px-4 py-2.5 text-sm font-semibold text-espresso transition hover:border-champagne hover:text-ink disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100;
+  }
+}
