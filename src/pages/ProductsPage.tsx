@@ -4,7 +4,7 @@ import { EmptyState } from '../components/EmptyState';
 import { ProductForm } from '../components/ProductForm';
 import { archiveProduct, createProduct, deleteProduct, getProducts, updateProduct } from '../services/productsService';
 import type { Product, ProductFormValues } from '../types/product';
-import { getErrorMessage } from '../utils/appError';
+import { getErrorMessage, isForeignKeyReferenceError } from '../utils/appError';
 import { formatCurrency, getProfitMargin } from '../utils/currency';
 
 export function ProductsPage() {
@@ -16,6 +16,7 @@ export function ProductsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
 
   async function loadProducts() {
     setLoading(true);
@@ -49,17 +50,22 @@ export function ProductsPage() {
 
   function openNewForm() {
     setEditingProduct(null);
+    setError('');
+    setNotice('');
     setShowForm(true);
   }
 
   function openEditForm(product: Product) {
     setEditingProduct(product);
+    setError('');
+    setNotice('');
     setShowForm(true);
   }
 
   async function handleSubmit(values: ProductFormValues) {
     setSaving(true);
     setError('');
+    setNotice('');
 
     try {
       if (editingProduct) {
@@ -70,6 +76,7 @@ export function ProductsPage() {
 
       setShowForm(false);
       setEditingProduct(null);
+      setNotice(editingProduct ? 'Producto actualizado correctamente.' : 'Producto creado correctamente.');
       await loadProducts();
     } catch (currentError) {
       setError(getErrorMessage(currentError, 'No se pudo guardar el producto.'));
@@ -79,19 +86,42 @@ export function ProductsPage() {
   }
 
   async function handleArchive(product: Product) {
-    const ok = window.confirm(`¿Archivar "${product.name}"?`);
+    const ok = window.confirm(`Archivar "${product.name}"?`);
     if (!ok) return;
 
-    await archiveProduct(product.id);
-    await loadProducts();
+    setError('');
+    setNotice('');
+
+    try {
+      await archiveProduct(product.id);
+      setNotice(`"${product.name}" se archivo correctamente.`);
+      await loadProducts();
+    } catch (currentError) {
+      setError(getErrorMessage(currentError, 'No se pudo archivar el producto.'));
+    }
   }
 
   async function handleDelete(product: Product) {
-    const ok = window.confirm(`¿Eliminar definitivamente "${product.name}"?`);
+    const ok = window.confirm(`Eliminar definitivamente "${product.name}"? Si ya tiene ventas, se archivara para conservar el historial.`);
     if (!ok) return;
 
-    await deleteProduct(product.id);
-    await loadProducts();
+    setError('');
+    setNotice('');
+
+    try {
+      await deleteProduct(product.id);
+      setNotice(`"${product.name}" se elimino correctamente.`);
+      await loadProducts();
+    } catch (currentError) {
+      if (isForeignKeyReferenceError(currentError)) {
+        await archiveProduct(product.id);
+        setNotice(`"${product.name}" tiene ventas registradas, por eso se archivo en lugar de eliminarse.`);
+        await loadProducts();
+        return;
+      }
+
+      setError(getErrorMessage(currentError, 'No se pudo eliminar el producto.'));
+    }
   }
 
   return (
@@ -100,7 +130,7 @@ export function ProductsPage() {
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-champagne">Inventario</p>
           <h1 className="mt-2 text-3xl font-black text-ink">Productos</h1>
-          <p className="mt-2 text-sm text-espresso/65">Alta, edición y control básico de piezas.</p>
+          <p className="mt-2 text-sm text-espresso/65">Alta, edicion y control basico de piezas.</p>
         </div>
         <button className="btn-primary" type="button" onClick={openNewForm}>
           <Plus size={18} aria-hidden="true" />
@@ -109,6 +139,7 @@ export function ProductsPage() {
       </section>
 
       {error ? <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{error}</p> : null}
+      {notice ? <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">{notice}</p> : null}
 
       {showForm ? (
         <ProductForm
@@ -134,7 +165,7 @@ export function ProductsPage() {
             />
           </label>
           <select className="field" value={category} onChange={(event) => setCategory(event.target.value)}>
-            <option value="all">Todas las categorías</option>
+            <option value="all">Todas las categorias</option>
             {categories.map((currentCategory) => (
               <option key={currentCategory} value={currentCategory}>
                 {currentCategory}
@@ -169,7 +200,9 @@ export function ProductsPage() {
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <h2 className="truncate text-lg font-bold text-ink">{product.name}</h2>
-                    <p className="text-sm text-espresso/60">{product.category} · {product.material}</p>
+                    <p className="text-sm text-espresso/60">
+                      {product.category} - {product.material}
+                    </p>
                   </div>
                   <span
                     className={`rounded-full px-2.5 py-1 text-xs font-bold ${

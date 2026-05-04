@@ -39,3 +39,14 @@ export function getErrorMessage(error: unknown, fallback: string) {
 
   return fallback;
 }
+
+export function isForeignKeyReferenceError(error: unknown) {
+  if (!error || typeof error !== 'object') {
+    return false;
+  }
+
+  const currentError = error as ErrorLike;
+  const message = readErrorMessage(currentError);
+
+  return currentError.code === '23503' || message.includes('foreign key constraint') || message.includes('still referenced');
+}
