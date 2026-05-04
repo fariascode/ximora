@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Camera, ImagePlus, X } from 'lucide-react';
 import { uploadProductImage } from '../services/storageService';
 import type { Product, ProductFormValues } from '../types/product';
+import { getErrorMessage } from '../utils/appError';
 
 const emptyProduct: ProductFormValues = {
   name: '',
@@ -109,7 +110,7 @@ export function ProductForm({ product, loading = false, onCancel, onSubmit }: Pr
         image_url: uploadedImageUrl?.trim() || null,
       });
     } catch (error) {
-      setImageError(error instanceof Error ? error.message : 'No se pudo subir la imagen.');
+      setImageError(getErrorMessage(error, 'No se pudo subir la imagen.'));
     } finally {
       setUploading(false);
     }

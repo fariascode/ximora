@@ -4,6 +4,7 @@ import { EmptyState } from '../components/EmptyState';
 import { ProductForm } from '../components/ProductForm';
 import { archiveProduct, createProduct, deleteProduct, getProducts, updateProduct } from '../services/productsService';
 import type { Product, ProductFormValues } from '../types/product';
+import { getErrorMessage } from '../utils/appError';
 import { formatCurrency, getProfitMargin } from '../utils/currency';
 
 export function ProductsPage() {
@@ -23,7 +24,7 @@ export function ProductsPage() {
     try {
       setProducts(await getProducts());
     } catch (currentError) {
-      setError(currentError instanceof Error ? currentError.message : 'No se pudieron cargar los productos.');
+      setError(getErrorMessage(currentError, 'No se pudieron cargar los productos.'));
     } finally {
       setLoading(false);
     }
@@ -71,7 +72,7 @@ export function ProductsPage() {
       setEditingProduct(null);
       await loadProducts();
     } catch (currentError) {
-      setError(currentError instanceof Error ? currentError.message : 'No se pudo guardar el producto.');
+      setError(getErrorMessage(currentError, 'No se pudo guardar el producto.'));
     } finally {
       setSaving(false);
     }

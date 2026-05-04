@@ -34,6 +34,12 @@ VITE_SUPABASE_PUBLISHABLE_KEY=tu-publishable-key
 
 Ejecuta el SQL de `supabase/schema.sql` en el SQL Editor de Supabase.
 
+Si ya ejecutaste el esquema inicial antes de crear ventas, ejecuta tambien:
+
+```txt
+supabase/register_sale.sql
+```
+
 Bucket sugerido para imágenes:
 
 - Nombre: `product-images`
