@@ -1,4 +1,4 @@
-import { BarChart3, Gem, LayoutDashboard, LogOut, Package, ReceiptText } from 'lucide-react';
+import { BarChart3, Gem, LayoutDashboard, LogOut, Package, ReceiptText, WalletCards } from 'lucide-react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
@@ -6,6 +6,7 @@ const navItems = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/products', label: 'Productos', icon: Package },
   { to: '/sales', label: 'Ventas', icon: ReceiptText },
+  { to: '/expenses', label: 'Gastos', icon: WalletCards },
   { to: '/reports', label: 'Reportes', icon: BarChart3, disabled: true },
 ];
 
@@ -46,7 +47,7 @@ export function AppLayout() {
         </main>
       </div>
 
-      <nav className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-4 border-t border-espresso/10 bg-white/95 px-2 py-2 shadow-[0_-8px_30px_rgba(63,52,45,0.08)] backdrop-blur lg:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-5 border-t border-espresso/10 bg-white/95 px-2 py-2 shadow-[0_-8px_30px_rgba(63,52,45,0.08)] backdrop-blur lg:hidden">
         {navItems.map((item) => (
           <MobileNavItem key={item.to} {...item} />
         ))}

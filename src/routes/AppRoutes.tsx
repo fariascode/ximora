@@ -5,6 +5,7 @@ import { DashboardPage } from '../pages/DashboardPage';
 import { LoginPage } from '../pages/LoginPage';
 import { ProductsPage } from '../pages/ProductsPage';
 import { SalesPage } from '../pages/SalesPage';
+import { ExpensesPage } from '../pages/ExpensesPage';
 
 export function AppRoutes() {
   return (
@@ -15,6 +16,7 @@ export function AppRoutes() {
           <Route index element={<DashboardPage />} />
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/sales" element={<SalesPage />} />
+          <Route path="/expenses" element={<ExpensesPage />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

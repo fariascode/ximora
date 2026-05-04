@@ -33,6 +33,10 @@ export function getErrorMessage(error: unknown, fallback: string) {
     return 'No existe la tabla `products` en el proyecto de Supabase conectado. Ejecuta `supabase/schema.sql` en ese proyecto.';
   }
 
+  if (message.includes('expenses')) {
+    return 'No existe la tabla `expenses` en el proyecto de Supabase conectado. Ejecuta `supabase/schema.sql` en ese proyecto.';
+  }
+
   if (currentError.message) {
     return currentError.message;
   }

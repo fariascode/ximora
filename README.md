@@ -57,6 +57,12 @@ Bucket sugerido para imágenes:
 - `src/types`: tipos de TypeScript.
 - `src/utils`: utilidades de formato y cálculo.
 
+## Modulos actuales
+
+- Productos: inventario, fotos, stock y archivado.
+- Ventas: registro de ventas, descuento de stock y restauracion al eliminar una venta.
+- Gastos: registro, edicion, eliminacion, filtros por mes/categoria y metricas basicas.
+
 ## Usar en otros dispositivos
 
 ### Opcion rapida en la misma red Wi-Fi
