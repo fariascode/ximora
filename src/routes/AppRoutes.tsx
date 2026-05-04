@@ -7,6 +7,7 @@ import { LoginPage } from '../pages/LoginPage';
 import { ProductsPage } from '../pages/ProductsPage';
 import { SalesPage } from '../pages/SalesPage';
 import { ExpensesPage } from '../pages/ExpensesPage';
+import { SettingsPage } from '../pages/SettingsPage';
 
 const ReportsPage = lazy(() => import('../pages/ReportsPage').then((module) => ({ default: module.ReportsPage })));
 
@@ -24,6 +25,7 @@ export function AppRoutes() {
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/sales" element={<SalesPage />} />
           <Route path="/expenses" element={<ExpensesPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
           <Route
             path="/reports"
             element={

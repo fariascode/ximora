@@ -3,12 +3,15 @@ import { useEffect, useMemo, useState } from 'react';
 import { EmptyState } from '../components/EmptyState';
 import { ProductForm } from '../components/ProductForm';
 import { archiveProduct, createProduct, deleteProduct, getProducts, updateProduct } from '../services/productsService';
+import { getProductCategories } from '../services/settingsService';
 import type { Product, ProductFormValues } from '../types/product';
+import type { ProductCategory } from '../types/settings';
 import { getErrorMessage, isForeignKeyReferenceError } from '../utils/appError';
 import { formatCurrency, getProfitMargin } from '../utils/currency';
 
 export function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [productCategories, setProductCategories] = useState<ProductCategory[]>([]);
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('all');
   const [showForm, setShowForm] = useState(false);
@@ -23,7 +26,9 @@ export function ProductsPage() {
     setError('');
 
     try {
-      setProducts(await getProducts());
+      const [productsData, categoriesData] = await Promise.all([getProducts(), getProductCategories()]);
+      setProducts(productsData);
+      setProductCategories(categoriesData);
     } catch (currentError) {
       setError(getErrorMessage(currentError, 'No se pudieron cargar los productos.'));
     } finally {
@@ -36,8 +41,8 @@ export function ProductsPage() {
   }, []);
 
   const categories = useMemo(
-    () => Array.from(new Set(products.map((product) => product.category).filter(Boolean))).sort(),
-    [products],
+    () => Array.from(new Set([...productCategories.filter((item) => item.active).map((item) => item.name), ...products.map((product) => product.category).filter(Boolean)])).sort(),
+    [productCategories, products],
   );
 
   const filteredProducts = useMemo(() => {
@@ -144,6 +149,7 @@ export function ProductsPage() {
       {showForm ? (
         <ProductForm
           product={editingProduct}
+          categories={categories}
           loading={saving}
           onCancel={() => {
             setShowForm(false);

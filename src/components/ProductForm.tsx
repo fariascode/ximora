@@ -19,12 +19,13 @@ const emptyProduct: ProductFormValues = {
 
 interface ProductFormProps {
   product?: Product | null;
+  categories?: string[];
   loading?: boolean;
   onCancel: () => void;
   onSubmit: (values: ProductFormValues) => Promise<void>;
 }
 
-export function ProductForm({ product, loading = false, onCancel, onSubmit }: ProductFormProps) {
+export function ProductForm({ product, categories = [], loading = false, onCancel, onSubmit }: ProductFormProps) {
   const [values, setValues] = useState<ProductFormValues>(emptyProduct);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState('');
@@ -141,13 +142,26 @@ export function ProductForm({ product, loading = false, onCancel, onSubmit }: Pr
 
         <label className="space-y-1.5">
           <span className="label">Categoria</span>
-          <input
-            className="field"
-            required
-            value={values.category}
-            onChange={(event) => updateField('category', event.target.value)}
-            placeholder="Aretes, pulseras..."
-          />
+          {categories.length > 0 ? (
+            <select className="field" required value={values.category} onChange={(event) => updateField('category', event.target.value)}>
+              <option value="" disabled>
+                Selecciona una categoria
+              </option>
+              {categories.map((currentCategory) => (
+                <option key={currentCategory} value={currentCategory}>
+                  {currentCategory}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              className="field"
+              required
+              value={values.category}
+              onChange={(event) => updateField('category', event.target.value)}
+              placeholder="Aretes, pulseras..."
+            />
+          )}
         </label>
 
         <label className="space-y-1.5">

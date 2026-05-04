@@ -41,6 +41,12 @@ supabase/register_sale.sql
 supabase/delete_sale.sql
 ```
 
+Para activar ajustes del negocio y categorias de producto:
+
+```txt
+supabase/settings.sql
+```
+
 Para limitar el acceso solo a correos autorizados, ejecuta:
 
 ```txt
@@ -72,6 +78,7 @@ Bucket sugerido para imágenes:
 - Gastos: registro, edicion, eliminacion, filtros por mes/categoria y metricas basicas.
 - Reportes: graficas, ranking de productos, valor de inventario y exportacion CSV.
 - PWA: iconos, manifest, soporte de instalacion y apple touch icon.
+- Ajustes: datos del negocio y categorias de productos editables.
 
 ## Instalar como app
 
