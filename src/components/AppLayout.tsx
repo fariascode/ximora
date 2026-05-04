@@ -2,12 +2,19 @@ import { BarChart3, Gem, LayoutDashboard, LogOut, Package, ReceiptText, WalletCa
 import { NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
-const navItems = [
+type NavItemConfig = {
+  to: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  disabled?: boolean;
+};
+
+const navItems: NavItemConfig[] = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/products', label: 'Productos', icon: Package },
   { to: '/sales', label: 'Ventas', icon: ReceiptText },
   { to: '/expenses', label: 'Gastos', icon: WalletCards },
-  { to: '/reports', label: 'Reportes', icon: BarChart3, disabled: true },
+  { to: '/reports', label: 'Reportes', icon: BarChart3 },
 ];
 
 export function AppLayout() {
@@ -70,7 +77,7 @@ function Brand({ compact = false }: { compact?: boolean }) {
   );
 }
 
-function NavItem({ to, label, icon: Icon, disabled }: (typeof navItems)[number]) {
+function NavItem({ to, label, icon: Icon, disabled }: NavItemConfig) {
   if (disabled) {
     return (
       <span className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-espresso/35">
@@ -95,7 +102,7 @@ function NavItem({ to, label, icon: Icon, disabled }: (typeof navItems)[number])
   );
 }
 
-function MobileNavItem({ to, label, icon: Icon, disabled }: (typeof navItems)[number]) {
+function MobileNavItem({ to, label, icon: Icon, disabled }: NavItemConfig) {
   if (disabled) {
     return (
       <span className="flex flex-col items-center gap-1 rounded-xl px-2 py-2 text-[11px] font-semibold text-espresso/30">
