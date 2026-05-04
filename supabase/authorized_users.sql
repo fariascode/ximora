@@ -5,7 +5,7 @@ do $$
 declare
   admin_email text := lower('ximorajewelry@gmail.com');
 begin
-  if admin_email = 'ximorajewelry@gmail.com' then
+  if admin_email = 'tu_correo@ejemplo.com' then
     raise exception 'Cambia TU_CORREO@EJEMPLO.COM por tu correo real antes de ejecutar este SQL.';
   end if;
 end;
