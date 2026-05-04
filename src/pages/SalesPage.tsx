@@ -1,10 +1,10 @@
-import { CircleDollarSign, PackageCheck, ReceiptText, TrendingUp } from 'lucide-react';
+import { CircleDollarSign, PackageCheck, ReceiptText, Trash2, TrendingUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { EmptyState } from '../components/EmptyState';
 import { SaleForm } from '../components/SaleForm';
 import { StatCard } from '../components/StatCard';
 import { getProducts } from '../services/productsService';
-import { getSales, registerSale } from '../services/salesService';
+import { deleteSale, getSales, registerSale } from '../services/salesService';
 import type { Product } from '../types/product';
 import type { SaleFormValues, SaleWithProduct } from '../types/sale';
 import { getErrorMessage } from '../utils/appError';
@@ -23,6 +23,7 @@ export function SalesPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
 
   async function loadData() {
     setLoading(true);
@@ -46,14 +47,33 @@ export function SalesPage() {
   async function handleSubmit(values: SaleFormValues) {
     setSaving(true);
     setError('');
+    setNotice('');
 
     try {
       await registerSale(values);
+      setNotice('Venta registrada correctamente.');
       await loadData();
     } catch (currentError) {
       setError(getErrorMessage(currentError, 'No se pudo registrar la venta.'));
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleDeleteSale(sale: SaleWithProduct) {
+    const productName = sale.product?.name ?? 'este producto';
+    const ok = window.confirm(`Eliminar esta venta de "${productName}"? Se regresara el stock al producto.`);
+    if (!ok) return;
+
+    setError('');
+    setNotice('');
+
+    try {
+      await deleteSale(sale.id);
+      setNotice('Venta eliminada y stock restaurado.');
+      await loadData();
+    } catch (currentError) {
+      setError(getErrorMessage(currentError, 'No se pudo eliminar la venta.'));
     }
   }
 
@@ -70,6 +90,7 @@ export function SalesPage() {
       </section>
 
       {error ? <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{error}</p> : null}
+      {notice ? <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">{notice}</p> : null}
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard title="Total vendido" value={loading ? '...' : formatCurrency(totalSold)} helper="Historial registrado" icon={CircleDollarSign} />
@@ -104,9 +125,14 @@ export function SalesPage() {
                 </div>
               </div>
 
-              <div className="text-left md:text-right">
+              <div className="flex items-center justify-between gap-3 md:justify-end">
+                <div className="text-left md:text-right">
                 <p className="font-bold text-ink">{formatCurrency(sale.total_sale)}</p>
                 <p className="text-sm text-emerald-700">Utilidad {formatCurrency(sale.profit)}</p>
+                </div>
+                <button className="btn-danger px-3" type="button" onClick={() => void handleDeleteSale(sale)} aria-label="Eliminar venta">
+                  <Trash2 size={17} aria-hidden="true" />
+                </button>
               </div>
             </article>
           ))}

@@ -36,3 +36,12 @@ export async function registerSale(values: SaleFormValues) {
   if (error) throw error;
   return data as Sale;
 }
+
+export async function deleteSale(id: string) {
+  const supabase = getSupabaseClient();
+  const { error } = await supabase.rpc('delete_sale', {
+    p_sale_id: id,
+  });
+
+  if (error) throw error;
+}

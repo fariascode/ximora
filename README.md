@@ -38,6 +38,7 @@ Si ya ejecutaste el esquema inicial antes de crear ventas, ejecuta tambien:
 
 ```txt
 supabase/register_sale.sql
+supabase/delete_sale.sql
 ```
 
 Bucket sugerido para imágenes:
