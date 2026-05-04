@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="XIMORA">
+  <rect width="128" height="128" rx="30" fill="#3f342d"/>
+  <path d="M35 33h58l17 23-46 43-46-43 17-23Z" fill="#f8efe7"/>
+  <path d="M35 33h58l17 23H18l17-23Z" fill="#d8b76a"/>
+  <path d="M48 33 64 99 80 33M18 56l46 43 46-43M43 56l21 43 21-43" fill="none" stroke="#3f342d" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -70,6 +70,22 @@ Bucket sugerido para imágenes:
 - Productos: inventario, fotos, stock y archivado.
 - Ventas: registro de ventas, descuento de stock y restauracion al eliminar una venta.
 - Gastos: registro, edicion, eliminacion, filtros por mes/categoria y metricas basicas.
+- Reportes: graficas, ranking de productos, valor de inventario y exportacion CSV.
+- PWA: iconos, manifest, soporte de instalacion y apple touch icon.
+
+## Instalar como app
+
+En iPhone o iPad:
+
+1. Abre la URL de Vercel en Safari.
+2. Toca compartir.
+3. Elige `Agregar a pantalla de inicio`.
+
+En Android:
+
+1. Abre la URL de Vercel en Chrome.
+2. Toca el menu del navegador.
+3. Elige `Instalar app` o `Agregar a pantalla principal`.
 
 ## Usar en otros dispositivos
 
